@@ -1,34 +1,6 @@
 import React from 'react';
+import SourceImage from './SourceImage';
 import './style.css';
-
-class SourceImage extends React.Component {
-  loadSelectedImage() {
-    const file = document.getElementById('imageSelector').files[0];
-
-    const reader = new FileReader();
-    reader.onload = (e) => this.props.onImageLoad(e.target.result);
-    reader.readAsDataURL(file);
-  }
-
-  showImageSelector() {
-    const selector = document.getElementById('imageSelector');
-    selector.click();
-  }
-
-  render() {
-    return (
-      <div id="sourceImageContainer">
-        <input type="file" id="imageSelector" accept="image/*"
-          onChange={() => this.loadSelectedImage()}
-        />
-        <input type="button" value="Load image"
-          onClick={() => this.showImageSelector()}
-        />
-        <img id="sourceImage" alt="불러온 이미지" />
-      </div>
-    );
-  }
-}
 
 class ResultImage extends React.Component {
   constructor(props) {
@@ -50,7 +22,6 @@ class ResultImage extends React.Component {
     const sourceImage = document.getElementById('sourceImage');
 
     const canvas = document.getElementById('resultCanvas');
-    console.log(sourceImage.width);
     canvas.width = sourceImage.width;
     canvas.height = sourceImage.height;
 
@@ -74,10 +45,6 @@ class ResultImage extends React.Component {
 }
 
 class TimeMachine extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleImageLoad(image) {
     const sourceImage = document.getElementById('sourceImage');
     sourceImage.src = image;
@@ -86,8 +53,11 @@ class TimeMachine extends React.Component {
     tempImage.src = image;
     tempImage.onload = () => {
       this.setState({
-        sourceWidth: tempImage.width,
-        sourceHeight: tempImage.height,
+        source: {
+          data: image,
+          width: tempImage.width,
+          height: tempImage.height,
+        }
       });
     };
   }
@@ -98,7 +68,9 @@ class TimeMachine extends React.Component {
         <SourceImage
           onImageLoad={(e) => this.handleImageLoad(e)}
         />
-        <ResultImage />
+        <ResultImage
+          source={this.source}
+        />
       </>
     );
   }
