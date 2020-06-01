@@ -39,13 +39,41 @@ class SourceImage extends React.Component {
 class ResultImage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      degrade: 0,
+    };
+  }
+
+  changeImageQuality() {
+    const degrade = document.getElementById('qualitySlider').value;
+    console.log(degrade);
+    this.setState({degrade: degrade});
+
+    this.getDegradedImage(this.state.degrade);
+  }
+
+  getDegradedImage(degrade) {
+    const sourceImage = document.getElementById('sourceImage');
+
+    const canvas = document.getElementById('resultCanvas');
+    console.log(sourceImage.width);
+    canvas.width = sourceImage.width;
+    canvas.height = sourceImage.height;
+
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(sourceImage, 0, 0);
+
+    const resultImage = document.getElementById('resultImage');
+    resultImage.src = canvas.toDataURL('image/jpeg', 0);
   }
 
   render() {
     return (
       <div id="resultImageContainer">
         <input type="button" value="Download image"></input>
-        <img></img>
+        <canvas id="resultCanvas" />
+        <img id="resultImage" />
+        <input type="range" id="qualitySlider" min="0" max="100" step="5" defaultValue="0" onChange={() => this.changeImageQuality()} />
       </div>
     );
   }
