@@ -3,63 +3,76 @@ import SourceImage from './SourceImage';
 import './style.css';
 
 class ResultImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      degrade: 0,
-    };
-  }
-
-  changeImageQuality() {
+  changeQuality() {
     const degrade = document.getElementById('qualitySlider').value;
-    console.log(degrade);
-    this.setState({degrade: degrade});
-
-    this.getDegradedImage(this.state.degrade);
+    this.props.onQualityChange(degrade);
   }
 
-  getDegradedImage(degrade) {
-    const sourceImage = document.getElementById('sourceImage');
+  getQualityFromDegrade(degrade) {
+    return 1 - (degrade / 100);
+  }
+
+  getDegradedImage(source) {
+    if (!source) return '';
 
     const canvas = document.getElementById('resultCanvas');
-    canvas.width = sourceImage.width;
-    canvas.height = sourceImage.height;
+    canvas.width = source.width;
+    canvas.height = source.height;
 
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(sourceImage, 0, 0);
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(source, 0, 0);
 
-    const resultImage = document.getElementById('resultImage');
-    resultImage.src = canvas.toDataURL('image/jpeg', 0);
+    return canvas.toDataURL(
+        'image/jpeg',
+        this.getQualityFromDegrade(this.props.degrade));
   }
 
   render() {
     return (
       <div id="resultImageContainer">
-        <input type="button" value="Download image"></input>
+        <input type="button" value="Download image" />
         <canvas id="resultCanvas" />
-        <img id="resultImage" alt="결과 이미지" />
-        <input type="range" id="qualitySlider" min="0" max="100" step="5" defaultValue="0" onChange={() => this.changeImageQuality()} />
+        <img id="resultImage" alt="결과 이미지"
+          src={this.getDegradedImage(this.props.source)}
+        />
+        <input type="range" id="qualitySlider"
+          min="0" max="100" step="5"
+          value={this.props.degrade}
+          onChange={() => this.changeQuality()}
+        />
       </div>
     );
   }
 }
 
 class TimeMachine extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      source: null,
+      degrade: 0,
+    };
+  }
+
   handleImageLoad(image) {
     const sourceImage = document.getElementById('sourceImage');
     sourceImage.src = image;
 
-    const tempImage = new Image();
-    tempImage.src = image;
-    tempImage.onload = () => {
+    const actualSizeImage = new Image();
+    actualSizeImage.src = image;
+    actualSizeImage.onload = () => {
       this.setState({
-        source: {
-          data: image,
-          width: tempImage.width,
-          height: tempImage.height,
-        }
+        degrade: 0,
+        source: actualSizeImage,
       });
     };
+  }
+
+  handleQualityChange(degrade) {
+    this.setState({
+      degrade: degrade,
+    });
   }
 
   render() {
@@ -69,7 +82,9 @@ class TimeMachine extends React.Component {
           onImageLoad={(e) => this.handleImageLoad(e)}
         />
         <ResultImage
-          source={this.source}
+          source={this.state.source}
+          degrade={this.state.degrade}
+          onQualityChange={(e) => this.handleQualityChange(e)}
         />
       </>
     );
