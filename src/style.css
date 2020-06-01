@@ -22,3 +22,13 @@ header p {
   margin: 0;
   padding: 0;
 }
+
+#sourceImage {
+}
+
+#imageLoader {
+  display: none;
+}
+
+#resultImage {
+}
