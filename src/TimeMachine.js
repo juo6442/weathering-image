@@ -18,13 +18,13 @@ class TimeMachine extends React.Component {
     sourceImage.src = image;
 
     const actualSizeImage = new Image();
-    actualSizeImage.src = image;
     actualSizeImage.onload = () => {
       this.setState({
         degrade: 0,
         source: actualSizeImage,
       });
     };
+    actualSizeImage.src = image;
   }
 
   handleQualityChange(degrade) {
