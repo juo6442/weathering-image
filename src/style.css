@@ -49,10 +49,6 @@ header p {
   max-height: 100%;
 }
 
-#resultCanvas {
-  display: none;
-}
-
 #qualitySlider {
   position: absolute;
   top: 0;

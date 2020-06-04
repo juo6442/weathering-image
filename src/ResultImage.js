@@ -14,7 +14,7 @@ class ResultImage extends React.Component {
   getDegradedImage(source) {
     if (!source) return '';
 
-    const canvas = document.getElementById('resultCanvas');
+    const canvas = document.createElement('canvas');
     canvas.width = source.width;
     canvas.height = source.height;
 
@@ -33,7 +33,6 @@ class ResultImage extends React.Component {
     return (
       <div id="resultImageContainer">
         <input type="button" value="Download image" />
-        <canvas id="resultCanvas" />
         <img id="resultImage" alt="결과 이미지"
           src={this.getDegradedImage(this.props.source)}
         />
