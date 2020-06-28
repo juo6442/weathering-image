@@ -1,77 +1,90 @@
-import React from 'react';
-import './style.css';
+import React from "react";
+import "./style.css";
 
 class ResultImage extends React.Component {
-  changeQuality() {
-    const degrade = document.getElementById('qualitySlider').value;
-    this.props.onQualityChange(degrade);
-  }
-
-  getScaleFromDegrade(degrade) {
-    return (100 - degrade) / 100 * 0.5 + 0.5;
-  }
-
   getQualityFromDegrade(degrade) {
     return (100 - degrade) / 100;
   }
 
-  getResizedImage(image, scale) {
-    return new Promise(function(resolve, reject) {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.width * scale;
-      canvas.height = image.height * scale;
-
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      const resizedImage = new Image();
-      resizedImage.onload = () => {
-        resolve(resizedImage);
+  getImageFromData(data) {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.onload = () => {
+        resolve(image);
       };
-      resizedImage.src = canvas.toDataURL('image/jpeg', 0);
+      image.src = data;
     });
   }
 
-  async getDegradedImage(source) {
-    if (!source) return '';
+  processFirstPass(image, degrade) {
+    const canvas = document.createElement("canvas");
+    const scale = 1 - degrade / 100 * 0.5 + 0.5;
+    canvas.width = image.width * scale;
+    canvas.height = image.height * scale;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = source.width;
-    canvas.height = source.height;
+    const ctx = canvas.getContext("2d");
 
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(await this.getResizedImage(source, this.getScaleFromDegrade(this.props.degrade)), 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    return canvas.toDataURL(
+      "image/jpeg",
+      this.getQualityFromDegrade(this.props.degrade)
+    );
+  }
+
+  processSecondPass(image, degrade, width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
     ctx.globalCompositeOperation = "overlay";
     ctx.fillStyle = "black";
-    ctx.globalAlpha = (1 - this.getQualityFromDegrade(this.props.degrade)) * 0.7;
+    ctx.globalAlpha = degrade / 100 * 0.7;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.globalCompositeOperation = "color-burn";
-    ctx.fillStyle = "rgb(234, 225, 176)";
-    ctx.globalAlpha = (1 - this.getQualityFromDegrade(this.props.degrade));
+    ctx.fillStyle = "rgb(230, 225, 170)";
+    ctx.globalAlpha = degrade / 100;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const result = canvas.toDataURL(
-      'image/jpeg',
-      this.getQualityFromDegrade(this.props.degrade)
+    return canvas.toDataURL(
+      "image/jpeg",
+      this.getQualityFromDegrade(degrade)
     );
-    document.getElementById('resultImage').src = result;
+  }
+
+  async getDegradedImage(imageData, degrade) {
+    if (!imageData) return "";
+
+    const image = await this.getImageFromData(imageData);
+    const originalWidth = image.width;
+    const originalHeight = image.height;
+
+    let result = this.processFirstPass(image, degrade);
+    result = this.processSecondPass(
+      await this.getImageFromData(result),
+      degrade,
+      originalWidth, originalHeight);
+
+    document.getElementById("resultImage").src = result;
   }
 
   render() {
     return (
       <div id="resultImageContainer">
-        <input type="button" value="Download image" />
+        <input type="button" value="이미지 저장" />
         <img id="resultImage" alt="결과 이미지"
-          src={this.getDegradedImage(this.props.source)}
+          src={this.getDegradedImage(this.props.imageData, this.props.degrade)}
         />
         <input type="range" id="qualitySlider"
           min="0" max="100" step="5"
           value={this.props.degrade}
-          onChange={() => this.changeQuality()}
+          onChange={(event) => this.props.onQualityChanged(event)}
         />
       </div>
     );

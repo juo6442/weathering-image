@@ -1,15 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Header from './Header';
-import Footer from './Footer';
-import TimeMachine from './TimeMachine';
-import './style.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import EditorSection from "./EditorSection";
+import "./style.css";
 
 function App(props) {
   return (
     <>
       <Header />
-      <TimeMachine />
+      <EditorSection />
       <Footer />
     </>
   );
@@ -17,5 +17,5 @@ function App(props) {
 
 ReactDOM.render(
   <App />,
-  document.getElementById('root')
+  document.getElementById("root")
 );
