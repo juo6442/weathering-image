@@ -10,26 +10,46 @@ body {
 
 header {
   margin: 0;
-  padding: 0.5em;
+  padding: 1em 1em 0 1em;
 }
 
 header h1 {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.2em 0;
+  font-size: 2em;
 }
 
 header p {
+  margin: 0em;
+  padding: 0;
+  font-size: 0.9em;
+}
+
+footer {
+  margin: 0;
+  padding: 0 1em 1em 1em;
+}
+footer p {
+  font-size: 0.9em;
+}
+
+hr {
   margin: 0;
   padding: 0;
+  border: dashed thin rgb(200, 200, 200);
 }
 
-#sourceImageContainer {
-  width: 300px;
-  height: 300px;
+.imageContainer {
+  position: relative;
   overflow: hidden;
+  margin: 1em;
+  padding: 0.5em;
+  min-width: 10em;
+  border: solid thin rgb(200, 200, 200);
+  text-align: center;
 }
 
-#sourceImage {
+.imageContainer .image {
   max-width: 100%;
   max-height: 100%;
 }
@@ -38,19 +58,60 @@ header p {
   display: none;
 }
 
-#resultImageContainer {
-  width: 300px;
-  height: 300px;
-  overflow: hidden;
-}
-
-#resultImage {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-#qualitySlider {
+input[type=button] {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 1em;
+  left: 1em;
+  padding: 0.3em 1em 0.3em 1em;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: solid thin #24B5CC;
+  color: #24B5CC;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+input[type=button]:active {
+  background-color: rgba(210, 210, 210, 0.8);
+}
+
+input[type=range] {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 0.5em 0 0.5em;
+  outline: none;
+  -webkit-appearance: none;
+
+  height: 5px;
+  background: #24B5CC;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  height: 1.7em;
+  width: 1.7em;
+  background: white;
+  border-color: #24B5CC;
+  border-width: thick;
+  border-style: solid;
+  border-radius: 50%;
+  -webkit-appearance: none;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 1.7em;
+  width: 1.7em;
+  background: white;
+  border-color: #24B5CC;
+  border-width: thick;
+  border-style: solid;
+  border-radius: 50%;
+}
+
+input[type=range]::-ms-thumb {
+  height: 1.7em;
+  width: 1.7em;
+  background: white;
+  border-color: #24B5CC;
+  border-width: thick;
+  border-style: solid;
+  border-radius: 50%;
 }

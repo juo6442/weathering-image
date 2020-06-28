@@ -17,14 +17,14 @@ class SourceImage extends React.Component {
 
   render() {
     return (
-      <div id="sourceImageContainer">
+      <div className="imageContainer">
         <input type="file" id="imageSelector" accept="image/*"
           onChange={() => this.loadSelectedImage()}
         />
-        <input className="" type="button" value="이미지 불러오기"
+        <input type="button" value="이미지 불러오기"
           onClick={() => this.showImageSelector()}
         />
-        <img id="sourceImage" alt="불러온 이미지"
+        <img className="image" alt="불러온 이미지"
           src={this.props.imageData}
         />
       </div>
