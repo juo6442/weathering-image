@@ -1,6 +1,7 @@
 import React from "react";
 import SourceImage from "./SourceImage";
 import ResultImage from "./ResultImage";
+import { getDegradedImage } from "./ImageDegrader";
 import "./style.css";
 
 class EditorSection extends React.Component {
@@ -10,6 +11,7 @@ class EditorSection extends React.Component {
     this.state = {
       imageData: null,
       degrade: 0,
+      degradedImageData: null,
     };
   }
 
@@ -17,13 +19,23 @@ class EditorSection extends React.Component {
     this.setState({
       degrade: 0,
       imageData: data,
-    });
+      degradedImageData: getDegradedImage(data, 0),
+    }, this.refreshResult);
   }
 
   handleQualityChange(event) {
     this.setState({
       degrade: event.target.value,
-    });
+    }, this.refreshResult);
+  }
+
+  refreshResult() {
+    getDegradedImage(this.state.imageData, this.state.degrade)
+      .then((result) => {
+        this.setState({
+          degradedImageData: result,
+        });
+      });
   }
 
   render() {
@@ -34,8 +46,8 @@ class EditorSection extends React.Component {
           onImageLoad={(data) => this.handleImageLoad(data)}
         />
         <ResultImage
-          imageData={this.state.imageData}
           degrade={this.state.degrade}
+          degradedImage={this.state.degradedImageData}
           onQualityChanged={(event) => this.handleQualityChange(event)}
         />
       </section>
