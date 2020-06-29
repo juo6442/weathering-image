@@ -23,6 +23,19 @@ class EditorSection extends React.Component {
     }, this.refreshResult);
   }
 
+  handleDragOver(event) {
+    event.preventDefault();
+  }
+
+  handleDrop(event) {
+    event.preventDefault();
+
+    if (event.dataTransfer.items[0].kind === "file") {
+      const file = event.dataTransfer.items[0].getAsFile();
+      this.loadSelectedImage(file);
+    }
+  }
+
   handleQualityChange(event) {
     this.setState({
       degrade: event.target.value,
@@ -52,9 +65,7 @@ class EditorSection extends React.Component {
     sampleImage.src = "sample.png";
   }
 
-  loadSelectedImage() {
-    const file = document.getElementById("imageSelector").files[0];
-
+  loadSelectedImage(file) {
     const reader = new FileReader();
     reader.onload = (e) => this.handleImageLoad(e.target.result);
     reader.readAsDataURL(file);
@@ -67,10 +78,13 @@ class EditorSection extends React.Component {
 
   render() {
     return (
-      <section className="imageEditor">
+      <section className="imageEditor"
+        onDragOver={(event) => this.handleDragOver(event)}
+        onDrop={(event) => this.handleDrop(event)}
+      >
         <div className="buttonContainer">
           <input type="file" id="imageSelector" accept="image/*"
-            onChange={() => this.loadSelectedImage()}
+            onChange={(event) => this.loadSelectedImage(event.target.files[0])}
           />
           <input type="button" value="이미지 불러오기"
             onClick={() => this.showImageSelector()}
