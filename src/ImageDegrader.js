@@ -58,7 +58,7 @@ async function getDegradedImage(imageData, degrade) {
 
   result = processSecondPass(
     await getImageFromData(result),
-    degrade / 100 * 0.5,
+    degrade / 100 * 0.1,
     degrade / 100,
     (100 - degrade) / 100,
     resultWidth, resultHeight);
