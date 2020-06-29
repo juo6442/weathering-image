@@ -19,7 +19,6 @@ class EditorSection extends React.Component {
     this.setState({
       degrade: 0,
       imageData: data,
-      degradedImageData: getDegradedImage(data, 0),
     }, this.refreshResult);
   }
 
