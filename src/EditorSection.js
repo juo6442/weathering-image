@@ -65,7 +65,7 @@ class EditorSection extends React.Component {
     sampleImage.src = "sample.png";
   }
 
-  loadSelectedImage(file) {
+  loadImage(file) {
     if (!file) return;
 
     const reader = new FileReader();
@@ -86,7 +86,7 @@ class EditorSection extends React.Component {
       >
         <div className="buttonContainer">
           <input type="file" id="imageSelector" accept="image/*"
-            onChange={(event) => this.loadSelectedImage(event.target.files[0])}
+            onChange={(event) => this.loadImage(event.target.files[0])}
           />
           <input type="button" value="이미지 불러오기"
             onClick={() => this.showImageSelector()}
