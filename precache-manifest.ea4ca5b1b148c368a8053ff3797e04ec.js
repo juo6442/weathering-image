@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7c0c466517f8587660535019c58e8b9a",
+    "revision": "65b35affb1bd225056ffe0e123bbb77f",
     "url": "/weathering-image/index.html"
   },
   {
