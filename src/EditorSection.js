@@ -66,6 +66,8 @@ class EditorSection extends React.Component {
   }
 
   loadSelectedImage(file) {
+    if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (e) => this.handleImageLoad(e.target.result);
     reader.readAsDataURL(file);
