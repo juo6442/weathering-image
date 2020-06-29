@@ -62,7 +62,7 @@ class EditorSection extends React.Component {
 
       this.handleImageLoad(canvas.toDataURL("Image/jpeg"));
     }
-    sampleImage.src = "sample.png";
+    sampleImage.src = document.URL + "/sample.png";
   }
 
   loadImage(file) {
