@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/weathering-image/static/css/main.429e7950.chunk.css",
+    "main.js": "/weathering-image/static/js/main.ae6d829e.chunk.js",
+    "main.js.map": "/weathering-image/static/js/main.ae6d829e.chunk.js.map",
+    "runtime-main.js": "/weathering-image/static/js/runtime-main.d8f314cd.js",
+    "runtime-main.js.map": "/weathering-image/static/js/runtime-main.d8f314cd.js.map",
+    "static/js/2.1637738b.chunk.js": "/weathering-image/static/js/2.1637738b.chunk.js",
+    "static/js/2.1637738b.chunk.js.map": "/weathering-image/static/js/2.1637738b.chunk.js.map",
+    "index.html": "/weathering-image/index.html",
+    "precache-manifest.56caa39b94561325d164a37a53dc4d0c.js": "/weathering-image/precache-manifest.56caa39b94561325d164a37a53dc4d0c.js",
+    "service-worker.js": "/weathering-image/service-worker.js",
+    "static/css/main.429e7950.chunk.css.map": "/weathering-image/static/css/main.429e7950.chunk.css.map",
+    "static/js/2.1637738b.chunk.js.LICENSE.txt": "/weathering-image/static/js/2.1637738b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d8f314cd.js",
+    "static/js/2.1637738b.chunk.js",
+    "static/css/main.429e7950.chunk.css",
+    "static/js/main.ae6d829e.chunk.js"
+  ]
+}
