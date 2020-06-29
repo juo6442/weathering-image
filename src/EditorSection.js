@@ -11,6 +11,8 @@ class EditorSection extends React.Component {
       degrade: 0,
       degradedImageData: null,
     };
+
+    this.loadSampleImage();
   }
 
   handleImageLoad(data) {
@@ -34,6 +36,20 @@ class EditorSection extends React.Component {
           degradedImageData: result,
         });
       });
+  }
+
+  loadSampleImage() {
+    const sampleImage = new Image();
+    sampleImage.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 400;
+      canvas.height = 400;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(sampleImage, 0, 0, canvas.width, canvas.height);
+
+      this.handleImageLoad(canvas.toDataURL("Image/jpeg"));
+    }
+    sampleImage.src = "sample.png";
   }
 
   loadSelectedImage() {
