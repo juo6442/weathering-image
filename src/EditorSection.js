@@ -59,7 +59,6 @@ class EditorSection extends React.Component {
           <input type="button" value="이미지 불러오기"
             onClick={() => this.showImageSelector()}
           />
-          <input type="button" value="이미지 저장" />
         </div>
 
         <img className="image" alt="불러온 이미지"
