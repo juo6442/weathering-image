@@ -8,10 +8,10 @@ function getImageFromData(data) {
   });
 }
 
-function processFirstPass(image, scale, quality) {
+function processFirstPass(image, quality, width, height) {
   const canvas = document.createElement("canvas");
-  canvas.width = image.width * scale;
-  canvas.height = image.height * scale;
+  canvas.width = width;
+  canvas.height = height;
 
   const ctx = canvas.getContext("2d");
 
@@ -45,22 +45,23 @@ function processSecondPass(image, overlayAmount, colorBurnAmount, quality, width
 
 async function getDegradedImage(imageData, degrade) {
   if (!imageData) return "";
-  console.log(degrade);
 
   const image = await getImageFromData(imageData);
-  const originalWidth = image.width;
-  const originalHeight = image.height;
+  const resultWidth = image.width;
+  const resultHeight = image.height;
 
+  const firstPassScale = (1 - degrade / 100) * 0.5 + 0.5;
   let result = processFirstPass(
     image,
-    (1 - degrade / 100) * 0.5 + 0.5,
-    (100 - degrade) / 100);
+    (100 - degrade) / 100,
+    resultWidth * firstPassScale, resultHeight * firstPassScale);
+
   result = processSecondPass(
     await getImageFromData(result),
     degrade / 100 * 0.5,
     degrade / 100,
     (100 - degrade) / 100,
-    originalWidth, originalHeight);
+    resultWidth, resultHeight);
 
   return result;
 }
