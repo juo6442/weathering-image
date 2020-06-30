@@ -37,7 +37,7 @@ class EditorSection extends React.Component {
 
     if (event.dataTransfer.items[0].kind === "file") {
       const file = event.dataTransfer.items[0].getAsFile();
-      this.loadSelectedImage(file);
+      this.loadImage(file);
     }
   }
 
