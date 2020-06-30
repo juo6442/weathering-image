@@ -10,16 +10,22 @@ class EditorSection extends React.Component {
       imageData: null,
       degrade: 0,
       degradedImageData: null,
+      degradedImageDataCache: null,
     };
 
     this.loadSampleImage();
   }
 
   handleImageLoad(data) {
+    const degradedImageDataCache = new Map();
+    degradedImageDataCache.set(0, data);
+
     this.setState({
       degrade: 0,
       imageData: data,
-    }, this.refreshResult);
+      degradedImageData: data,
+      degradedImageDataCache: degradedImageDataCache,
+    }, () => this.showDegradedImage(this.state.degrade));
   }
 
   handleDragOver(event) {
@@ -37,15 +43,27 @@ class EditorSection extends React.Component {
 
   handleQualityChange(event) {
     this.setState({
-      degrade: event.target.value,
-    }, this.refreshResult);
+      degrade: Number(event.target.value),
+    }, () => this.showDegradedImage(this.state.degrade));
   }
 
-  refreshResult() {
-    getDegradedImage(this.state.imageData, this.state.degrade)
+  showDegradedImage(degrade) {
+    const cache = this.state.degradedImageDataCache.get(degrade);
+    if (cache) {
+      this.setState({
+        degradedImageData: cache,
+      });
+      return;
+    }
+
+    getDegradedImage(this.state.imageData, degrade)
       .then((result) => {
+        const degradedImageDataCache = new Map(this.state.degradedImageDataCache);
+        degradedImageDataCache.set(degrade, result);
+
         this.setState({
           degradedImageData: result,
+          degradedImageDataCache: degradedImageDataCache,
         });
       });
   }
