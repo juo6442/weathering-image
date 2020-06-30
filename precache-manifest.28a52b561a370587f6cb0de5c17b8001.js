@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c192150a63c67ed666ba5c85b23ea0e9",
+    "revision": "974401e4b673b337178894a595266cc5",
     "url": "/weathering-image/index.html"
   },
   {
-    "revision": "80b175619be18af1301e",
+    "revision": "2c5ee7ea4d84a8cad63f",
     "url": "/weathering-image/static/css/main.429e7950.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/weathering-image/static/js/2.1637738b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "80b175619be18af1301e",
-    "url": "/weathering-image/static/js/main.ae39d131.chunk.js"
+    "revision": "2c5ee7ea4d84a8cad63f",
+    "url": "/weathering-image/static/js/main.88be05bc.chunk.js"
   },
   {
     "revision": "a8875fae530556c0eb1d",
