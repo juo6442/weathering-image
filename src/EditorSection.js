@@ -1,6 +1,8 @@
 import React from "react";
-import { getDegradedImage } from "./ImageDegrader";
+import { fitImageSize, getDegradedImage } from "./ImageDegrader";
 import "./style.css";
+
+const maxImageSize = 1500 * 1500;
 
 class EditorSection extends React.Component {
   constructor(props) {
@@ -17,15 +19,18 @@ class EditorSection extends React.Component {
   }
 
   handleImageLoad(data) {
-    const degradedImageDataCache = new Map();
-    degradedImageDataCache.set(0, data);
+    fitImageSize(data, maxImageSize)
+      .then((result) => {
+        const degradedImageDataCache = new Map();
+        degradedImageDataCache.set(0, result);
 
-    this.setState({
-      degrade: 0,
-      imageData: data,
-      degradedImageData: data,
-      degradedImageDataCache: degradedImageDataCache,
-    }, () => this.showDegradedImage(this.state.degrade));
+        this.setState({
+          degrade: 0,
+          imageData: result,
+          degradedImageData: result,
+          degradedImageDataCache: degradedImageDataCache,
+        }, () => this.showDegradedImage(this.state.degrade));
+      });
   }
 
   handleDragOver(event) {
@@ -77,7 +82,7 @@ class EditorSection extends React.Component {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(sampleImage, 0, 0, canvas.width, canvas.height);
 
-      this.handleImageLoad(canvas.toDataURL("Image/jpeg"));
+      this.handleImageLoad(canvas.toDataURL("Image/jpeg"), 1);
     }
     sampleImage.src = document.URL + "/sample.png";
   }

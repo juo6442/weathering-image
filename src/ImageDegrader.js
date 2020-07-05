@@ -8,6 +8,26 @@ function getImageFromData(data) {
   });
 }
 
+async function fitImageSize(imageData, size) {
+  if (!imageData) return "";
+
+  const image = await getImageFromData(imageData);
+  const canvas = document.createElement("canvas");
+
+  const imageSize = image.width * image.height;
+  const scale = (size < imageSize) ? Math.sqrt(size / imageSize) : 1;
+  canvas.width = parseInt(image.width * scale);
+  canvas.height = parseInt(image.height * scale);
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  return canvas.toDataURL("image/jpeg", 1);
+}
+
 function processFirstPass(image, quality, width, height) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -15,7 +35,6 @@ function processFirstPass(image, quality, width, height) {
 
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
@@ -66,4 +85,4 @@ async function getDegradedImage(imageData, degrade) {
   return result;
 }
 
-export { getDegradedImage };
+export { fitImageSize, getDegradedImage };
