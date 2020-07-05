@@ -1,5 +1,5 @@
 import React from "react";
-import { fitImageSize, getDegradedImage } from "./ImageDegrader";
+import * as degrader from "./ImageDegrader";
 import "./style.css";
 
 const maxImageSize = 1500 * 1500;
@@ -9,26 +9,24 @@ class EditorSection extends React.Component {
     super(props);
 
     this.state = {
-      imageData: null,
       degrade: 0,
       degradedImageData: null,
-      degradedImageDataCache: null,
+      imageDataCache: null,
     };
 
     this.loadSampleImage();
   }
 
   handleImageLoad(data) {
-    fitImageSize(data, maxImageSize)
+    degrader.fitImageSize(data, maxImageSize)
       .then((result) => {
-        const degradedImageDataCache = new Map();
-        degradedImageDataCache.set(0, result);
+        const imageDataCache = new Map();
+        imageDataCache.set(0, result);
 
         this.setState({
           degrade: 0,
-          imageData: result,
           degradedImageData: result,
-          degradedImageDataCache: degradedImageDataCache,
+          imageDataCache: imageDataCache,
         }, () => this.showDegradedImage(this.state.degrade));
       });
   }
@@ -53,7 +51,7 @@ class EditorSection extends React.Component {
   }
 
   showDegradedImage(degrade) {
-    const cache = this.state.degradedImageDataCache.get(degrade);
+    const cache = this.state.imageDataCache.get(degrade);
     if (cache) {
       this.setState({
         degradedImageData: cache,
@@ -61,14 +59,14 @@ class EditorSection extends React.Component {
       return;
     }
 
-    getDegradedImage(this.state.imageData, degrade)
+    degrader.getDegradedImage(this.state.imageDataCache.get(0), degrade)
       .then((result) => {
-        const degradedImageDataCache = new Map(this.state.degradedImageDataCache);
-        degradedImageDataCache.set(degrade, result);
+        const imageDataCache = new Map(this.state.imageDataCache);
+        imageDataCache.set(degrade, result);
 
         this.setState({
           degradedImageData: result,
-          degradedImageDataCache: degradedImageDataCache,
+          imageDataCache: imageDataCache,
         });
       });
   }

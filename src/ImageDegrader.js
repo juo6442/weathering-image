@@ -8,7 +8,7 @@ function getImageFromData(data) {
   });
 }
 
-async function fitImageSize(imageData, size) {
+export async function fitImageSize(imageData, size) {
   if (!imageData) return "";
 
   const image = await getImageFromData(imageData);
@@ -62,7 +62,7 @@ function processSecondPass(image, overlayAmount, colorBurnAmount, quality, width
   return canvas.toDataURL("image/jpeg", quality);
 }
 
-async function getDegradedImage(imageData, degrade) {
+export async function getDegradedImage(imageData, degrade) {
   if (!imageData) return "";
 
   const image = await getImageFromData(imageData);
@@ -84,5 +84,3 @@ async function getDegradedImage(imageData, degrade) {
 
   return result;
 }
-
-export { fitImageSize, getDegradedImage };
